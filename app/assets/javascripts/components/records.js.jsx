@@ -12,6 +12,20 @@ var Records = React.createClass({
     this.setState({ records: records });
   },
 
+  deleteRecord: function(record) {
+    var index = this.state.records.indexOf(record);
+    var records = React.addons.update(this.state.records,
+                                      { $splice: [[index, 1]] });
+    this.replaceState({ records: records});
+  },
+
+  updateRecord: function(record, data) {
+    var index = this.state.records.indexOf(record);
+    var records = React.addons.update(this.state.records,
+                                      { $splice: [[index, 1, data]] });
+    this.replaceState({ records: records });
+  },
+
   credits: function() {
     var credits = this.state.records.filter(function(val) {
       return val.amount >= 0
@@ -34,13 +48,6 @@ var Records = React.createClass({
     return this.debits() + this.credits();
   },
 
-  deleteRecord: function(record) {
-    var index = this.state.records.indexOf(record);
-    var records = React.addons.update(this.state.records,
-                                      { $splice: [[index, 1]] });
-    this.replaceState({ records: records} );
-  },
-
   render: function() {
     return(
       <div className='records'>
@@ -52,7 +59,7 @@ var Records = React.createClass({
           <AmountBox type='danger' amount={this.debits()} text='Debit' />
           <AmountBox type='info' amount={this.balance()} text='Balance' />
         </div>
-        <RecordForm handleNewRecord = {this.addRecord} />
+        <RecordForm handleNewRecord={this.addRecord} />
         <table className='table table-bordered'>
           <thead>
             <tr>
@@ -65,7 +72,8 @@ var Records = React.createClass({
           <tbody>
             {this.state.records.map(function(record) {
               return <Record key={record.id} record={record}
-                             handleDeleteRecord={this.deleteRecord} />
+                             handleDeleteRecord={this.deleteRecord}
+                             handleEditRecord={this.updateRecord} />
              }.bind(this))}
           </tbody>
         </table>
