@@ -5,3 +5,16 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+3.times do |i|
+  record = { date: Date.today,
+             title: "Title",
+             amount: rand(0..100).to_i }
+  Record.create(record)
+end
+
+3.times do |i|
+  record = { date: Date.today,
+             title: "Title",
+             amount: rand(-100..0).to_i }
+  Record.create(record)
+end
